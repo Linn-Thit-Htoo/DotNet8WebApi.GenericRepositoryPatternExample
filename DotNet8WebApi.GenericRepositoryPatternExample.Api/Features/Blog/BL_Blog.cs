@@ -1,115 +1,114 @@
-﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog;
+
+public class BL_Blog
 {
-    public class BL_Blog
+    private readonly IGenericRepository<TblBlog> _genericRepository;
+
+    public BL_Blog(IGenericRepository<TblBlog> genericRepository)
     {
-        private readonly IGenericRepository<TblBlog> _genericRepository;
+        _genericRepository = genericRepository;
+    }
 
-        public BL_Blog(IGenericRepository<TblBlog> genericRepository)
+    public async Task<Result<TblBlog>> GetBlogs()
+    {
+        Result<TblBlog> responseModel;
+        try
         {
-            _genericRepository = genericRepository;
+            responseModel = await _genericRepository.GetListOrderByDescAsync(x => x.BlogId);
+        }
+        catch (Exception ex)
+        {
+            responseModel = Result<TblBlog>.FailureResult(ex);
         }
 
-        public async Task<Result<TblBlog>> GetBlogs()
+        return responseModel;
+    }
+
+    public async Task<Result<TblBlog>> GetBlogById(int id)
+    {
+        Result<TblBlog> responseModel;
+        try
         {
-            Result<TblBlog> responseModel;
-            try
+            if (id <= 0)
             {
-                responseModel = await _genericRepository.GetListOrderByDescAsync(x => x.BlogId);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<TblBlog>.FailureResult(ex);
+                responseModel = Result<TblBlog>.FailureResult(MessageResource.InvalidId);
+                goto result;
             }
 
-            return responseModel;
+            responseModel = await _genericRepository.GetByIdAsync(id);
         }
-
-        public async Task<Result<TblBlog>> GetBlogById(int id)
+        catch (Exception ex)
         {
-            Result<TblBlog> responseModel;
-            try
-            {
-                if (id <= 0)
-                {
-                    responseModel = Result<TblBlog>.FailureResult(MessageResource.InvalidId);
-                    goto result;
-                }
-
-                responseModel = await _genericRepository.GetByIdAsync(id);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<TblBlog>.FailureResult(ex);
-            }
+            responseModel = Result<TblBlog>.FailureResult(ex);
+        }
 
         result:
-            return responseModel;
+        return responseModel;
+    }
+
+    public async Task<Result<TblBlog>> CreateBlog(BlogRequestModel requestModel)
+    {
+        Result<TblBlog> responseModel;
+        try
+        {
+            responseModel = await _genericRepository.AddAsync(requestModel.Change());
+        }
+        catch (Exception ex)
+        {
+            responseModel = Result<TblBlog>.FailureResult(ex);
         }
 
-        public async Task<Result<TblBlog>> CreateBlog(BlogRequestModel requestModel)
+        return responseModel;
+    }
+
+    public async Task<Result<TblBlog>> UpdateBlog(BlogRequestModel requestModel, int id)
+    {
+        Result<TblBlog> responseModel;
+        try
         {
-            Result<TblBlog> responseModel;
-            try
+            if (id <= 0)
             {
-                responseModel = await _genericRepository.AddAsync(requestModel.Change());
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<TblBlog>.FailureResult(ex);
+                responseModel = Result<TblBlog>.FailureResult(MessageResource.InvalidId);
+                goto result;
             }
 
-            return responseModel;
+            var model = new TblBlog
+            {
+                BlogId = id,
+                BlogTitle = requestModel.BlogTitle,
+                BlogAuthor = requestModel.BlogAuthor,
+                BlogContent = requestModel.BlogContent
+            };
+            responseModel = await _genericRepository.UpdateAsync(model, id);
         }
-
-        public async Task<Result<TblBlog>> UpdateBlog(BlogRequestModel requestModel, int id)
+        catch (Exception ex)
         {
-            Result<TblBlog> responseModel;
-            try
-            {
-                if (id <= 0)
-                {
-                    responseModel = Result<TblBlog>.FailureResult(MessageResource.InvalidId);
-                    goto result;
-                }
-
-                var model = new TblBlog
-                {
-                    BlogId = id,
-                    BlogTitle = requestModel.BlogTitle,
-                    BlogAuthor = requestModel.BlogAuthor,
-                    BlogContent = requestModel.BlogContent
-                };
-                responseModel = await _genericRepository.UpdateAsync(model, id);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<TblBlog>.FailureResult(ex);
-            }
+            responseModel = Result<TblBlog>.FailureResult(ex);
+        }
 
         result:
-            return responseModel;
-        }
+        return responseModel;
+    }
 
-        public async Task<Result<TblBlog>> DeleteBlog(int id)
+    public async Task<Result<TblBlog>> DeleteBlog(int id)
+    {
+        Result<TblBlog> responseModel;
+        try
         {
-            Result<TblBlog> responseModel;
-            try
+            if (id <= 0)
             {
-                if (id <= 0)
-                {
-                    responseModel = Result<TblBlog>.FailureResult(MessageResource.InvalidId);
-                    goto result;
-                }
+                responseModel = Result<TblBlog>.FailureResult(MessageResource.InvalidId);
+                goto result;
+            }
 
-                responseModel = await _genericRepository.DeleteAsync(id);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<TblBlog>.FailureResult(ex);
-            }
+            responseModel = await _genericRepository.DeleteAsync(id);
+        }
+        catch (Exception ex)
+        {
+            responseModel = Result<TblBlog>.FailureResult(ex);
+        }
 
         result:
-            return responseModel;
-        }
+        return responseModel;
     }
 }
