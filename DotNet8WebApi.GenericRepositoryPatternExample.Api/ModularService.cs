@@ -1,8 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog;
-using DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student;
-using Microsoft.EntityFrameworkCore;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Api
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api
 {
     public static class ModularService
     {
