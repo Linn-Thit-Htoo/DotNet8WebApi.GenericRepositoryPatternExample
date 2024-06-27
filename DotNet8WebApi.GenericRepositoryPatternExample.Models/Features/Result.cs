@@ -1,6 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.Models.Enums;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
 
 public class Result<T>
 {
