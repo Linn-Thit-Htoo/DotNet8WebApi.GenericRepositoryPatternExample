@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features;
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog;
 
 [Route("api/[controller]")]
 [ApiController]
