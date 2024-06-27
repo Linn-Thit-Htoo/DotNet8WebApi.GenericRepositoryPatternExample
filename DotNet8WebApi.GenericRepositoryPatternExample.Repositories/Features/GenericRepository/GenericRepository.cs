@@ -3,12 +3,6 @@ using DotNet8WebApi.GenericRepositoryPatternExample.Models.Enums;
 using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
 using DotNet8WebApi.GenericRepositoryPatternExample.Models.Resources;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository
 {
