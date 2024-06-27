@@ -1,7 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.DbService.AppDbContexts;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features.Blog;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Mapper;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Mapper;
 
 public static class ChangeModel
 {
