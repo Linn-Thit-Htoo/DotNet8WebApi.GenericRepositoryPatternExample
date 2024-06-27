@@ -1,6 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features.Blog;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog

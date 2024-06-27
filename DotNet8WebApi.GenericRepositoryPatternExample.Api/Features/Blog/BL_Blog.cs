@@ -1,11 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.DbService.AppDbContexts;
-using DotNet8WebApi.GenericRepositoryPatternExample.Mapper;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features.Blog;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Resources;
-using DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog
 {
     public class BL_Blog
     {

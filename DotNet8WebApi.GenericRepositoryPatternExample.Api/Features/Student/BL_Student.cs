@@ -1,8 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.DbService.AppDbContexts;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
-using DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student
 {
     public class BL_Student
     {
