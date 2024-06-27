@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotNet8WebApi.GenericRepositoryPatternExample.DbService\DotNet8WebApi.GenericRepositoryPatternExample.DbService.csproj" />
+    <ProjectReference Include="..\DotNet8WebApi.GenericRepositoryPatternExample.Mapper\DotNet8WebApi.GenericRepositoryPatternExample.Mapper.csproj" />
+    <ProjectReference Include="..\DotNet8WebApi.GenericRepositoryPatternExample.Models\DotNet8WebApi.GenericRepositoryPatternExample.Models.csproj" />
+    <ProjectReference Include="..\DotNet8WebApi.GenericRepositoryPatternExample.Shared\DotNet8WebApi.GenericRepositoryPatternExample.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
