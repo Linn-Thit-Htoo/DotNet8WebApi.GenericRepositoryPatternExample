@@ -1,6 +1,7 @@
 ﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class
+public class GenericRepository<T> : IGenericRepository<T>
+    where T : class
 {
     private readonly AppDbContext _context;
     private readonly DbSet<T> _table;
@@ -33,7 +34,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         try
         {
             var lst = await _table.ToListAsync();
-            responseModel = Result<T>.SuccessResult(lst.OrderByDescending(orderBySelector).ToList());
+            responseModel = Result<T>.SuccessResult(
+                lst.OrderByDescending(orderBySelector).ToList()
+            );
         }
         catch (Exception ex)
         {
@@ -51,7 +54,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             var item = await _table.FindAsync(id);
             if (item is null)
             {
-                responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                responseModel = Result<T>.FailureResult(
+                    MessageResource.NotFound,
+                    EnumStatusCode.NotFound
+                );
                 goto result;
             }
 
@@ -75,7 +81,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             await _context.Set<T>().AddAsync(requestModel);
             int result = await _context.SaveChangesAsync();
 
-            responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Created);
+            responseModel = Result<T>.ExecuteResult(
+                result,
+                successStatusCode: EnumStatusCode.Created
+            );
         }
         catch (Exception ex)
         {
@@ -93,7 +102,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             var item = await _table.FindAsync(id);
             if (item is null)
             {
-                responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                responseModel = Result<T>.FailureResult(
+                    MessageResource.NotFound,
+                    EnumStatusCode.NotFound
+                );
                 return responseModel;
             }
 
@@ -110,7 +122,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             _table.Update(item);
             int result = await _context.SaveChangesAsync();
 
-            responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
+            responseModel = Result<T>.ExecuteResult(
+                result,
+                successStatusCode: EnumStatusCode.Accepted
+            );
         }
         catch (Exception ex)
         {
@@ -128,14 +143,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             var item = await _table.FindAsync(id);
             if (item is null)
             {
-                responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                responseModel = Result<T>.FailureResult(
+                    MessageResource.NotFound,
+                    EnumStatusCode.NotFound
+                );
                 goto result;
             }
 
             _table.Remove(item);
             int result = await _context.SaveChangesAsync();
 
-            responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
+            responseModel = Result<T>.ExecuteResult(
+                result,
+                successStatusCode: EnumStatusCode.Accepted
+            );
         }
         catch (Exception ex)
         {
