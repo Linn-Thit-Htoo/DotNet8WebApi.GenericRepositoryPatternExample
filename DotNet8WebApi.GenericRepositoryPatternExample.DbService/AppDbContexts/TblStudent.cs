@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.DbService.AppDbContexts;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.DbService.AppDbContexts;
 
 public partial class TblStudent
 {
