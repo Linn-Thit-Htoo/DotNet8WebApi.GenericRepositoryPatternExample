@@ -4,152 +4,151 @@ using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
 using DotNet8WebApi.GenericRepositoryPatternExample.Models.Resources;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository
+namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
+
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    private readonly AppDbContext _context;
+    private readonly DbSet<T> _table;
+
+    public GenericRepository(AppDbContext context)
     {
-        private readonly AppDbContext _context;
-        private readonly DbSet<T> _table;
+        _context = context;
+        _table = _context.Set<T>();
+    }
 
-        public GenericRepository(AppDbContext context)
+    public async Task<Result<T>> GetListAsync()
+    {
+        Result<T> responseModel;
+        try
         {
-            _context = context;
-            _table = _context.Set<T>();
+            var lst = await _table.ToListAsync();
+            responseModel = Result<T>.SuccessResult(lst);
+        }
+        catch (Exception ex)
+        {
+            responseModel = Result<T>.FailureResult(ex);
         }
 
-        public async Task<Result<T>> GetListAsync()
-        {
-            Result<T> responseModel;
-            try
-            {
-                var lst = await _table.ToListAsync();
-                responseModel = Result<T>.SuccessResult(lst);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
-            }
+        return responseModel;
+    }
 
-            return responseModel;
+    public async Task<Result<T>> GetListOrderByDescAsync<TKey>(Func<T, TKey> orderBySelector)
+    {
+        Result<T> responseModel;
+        try
+        {
+            var lst = await _table.ToListAsync();
+            responseModel = Result<T>.SuccessResult(lst.OrderByDescending(orderBySelector).ToList());
+        }
+        catch (Exception ex)
+        {
+            responseModel = Result<T>.FailureResult(ex);
         }
 
-        public async Task<Result<T>> GetListOrderByDescAsync<TKey>(Func<T, TKey> orderBySelector)
+        return responseModel;
+    }
+
+    public async Task<Result<T>> GetByIdAsync(int id)
+    {
+        Result<T> responseModel;
+        try
         {
-            Result<T> responseModel;
-            try
+            var item = await _table.FindAsync(id);
+            if (item is null)
             {
-                var lst = await _table.ToListAsync();
-                responseModel = Result<T>.SuccessResult(lst.OrderByDescending(orderBySelector).ToList());
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
+                responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                goto result;
             }
 
-            return responseModel;
+            List<T> lst = new() { item };
+            responseModel = Result<T>.SuccessResult(lst);
         }
-
-        public async Task<Result<T>> GetByIdAsync(int id)
+        catch (Exception ex)
         {
-            Result<T> responseModel;
-            try
-            {
-                var item = await _table.FindAsync(id);
-                if (item is null)
-                {
-                    responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
-                    goto result;
-                }
-
-                List<T> lst = new() { item };
-                responseModel = Result<T>.SuccessResult(lst);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
-            }
+            responseModel = Result<T>.FailureResult(ex);
+        }
 
         result:
-            return responseModel;
+        return responseModel;
+    }
+
+    public async Task<Result<T>> AddAsync(T requestModel)
+    {
+        Result<T> responseModel;
+        try
+        {
+            await _context.Set<T>().AddAsync(requestModel);
+            int result = await _context.SaveChangesAsync();
+
+            responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Created);
+        }
+        catch (Exception ex)
+        {
+            responseModel = Result<T>.FailureResult(ex);
         }
 
-        public async Task<Result<T>> AddAsync(T requestModel)
+        return responseModel;
+    }
+
+    public async Task<Result<T>> UpdateAsync(T requestModel, int id)
+    {
+        Result<T> responseModel;
+        try
         {
-            Result<T> responseModel;
-            try
+            var item = await _table.FindAsync(id);
+            if (item is null)
             {
-                await _context.Set<T>().AddAsync(requestModel);
-                int result = await _context.SaveChangesAsync();
-
-                responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
+                responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                return responseModel;
             }
 
-            return responseModel;
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
+            {
+                var newValue = property.GetValue(requestModel);
+                if (newValue is not null)
+                {
+                    property.SetValue(item, newValue);
+                }
+            }
+
+            _table.Update(item);
+            int result = await _context.SaveChangesAsync();
+
+            responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
+        }
+        catch (Exception ex)
+        {
+            responseModel = Result<T>.FailureResult(ex);
         }
 
-        public async Task<Result<T>> UpdateAsync(T requestModel, int id)
+        return responseModel;
+    }
+
+    public async Task<Result<T>> DeleteAsync(int id)
+    {
+        Result<T> responseModel;
+        try
         {
-            Result<T> responseModel;
-            try
+            var item = await _table.FindAsync(id);
+            if (item is null)
             {
-                var item = await _table.FindAsync(id);
-                if (item is null)
-                {
-                    responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
-                    return responseModel;
-                }
-
-                var properties = typeof(T).GetProperties();
-                foreach (var property in properties)
-                {
-                    var newValue = property.GetValue(requestModel);
-                    if (newValue is not null)
-                    {
-                        property.SetValue(item, newValue);
-                    }
-                }
-
-                _table.Update(item);
-                int result = await _context.SaveChangesAsync();
-
-                responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
+                responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                goto result;
             }
 
-            return responseModel;
+            _table.Remove(item);
+            int result = await _context.SaveChangesAsync();
+
+            responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
         }
-
-        public async Task<Result<T>> DeleteAsync(int id)
+        catch (Exception ex)
         {
-            Result<T> responseModel;
-            try
-            {
-                var item = await _table.FindAsync(id);
-                if (item is null)
-                {
-                    responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
-                    goto result;
-                }
-
-                _table.Remove(item);
-                int result = await _context.SaveChangesAsync();
-
-                responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
-            }
+            responseModel = Result<T>.FailureResult(ex);
+        }
 
         result:
-            return responseModel;
-        }
+        return responseModel;
     }
 }
