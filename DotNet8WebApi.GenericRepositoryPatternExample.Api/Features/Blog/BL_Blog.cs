@@ -4,7 +4,6 @@ using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
 using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features.Blog;
 using DotNet8WebApi.GenericRepositoryPatternExample.Models.Resources;
 using DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog
 {

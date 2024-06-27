@@ -23,74 +23,6 @@ namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.Ge
             _table = _context.Set<T>();
         }
 
-        public async Task<Result<T>> AddAsync(T requestModel)
-        {
-            Result<T> responseModel;
-            try
-            {
-                await _context.Set<T>().AddAsync(requestModel);
-                int result = await _context.SaveChangesAsync();
-
-                responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
-            }
-
-            return responseModel;
-        }
-
-        public async Task<Result<T>> DeleteAsync(int id)
-        {
-            Result<T> responseModel;
-            try
-            {
-                var item = await _table.FindAsync(id);
-                if (item is null)
-                {
-                    responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
-                    goto result;
-                }
-
-                _table.Remove(item);
-                int result = await _context.SaveChangesAsync();
-
-                responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
-            }
-
-        result:
-            return responseModel;
-        }
-
-        public async Task<Result<T>> GetByIdAsync(int id)
-        {
-            Result<T> responseModel;
-            try
-            {
-                var item = await _table.FindAsync(id);
-                if (item is null)
-                {
-                    responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
-                    goto result;
-                }
-
-                List<T> lst = new() { item };
-                responseModel = Result<T>.SuccessResult(lst);
-            }
-            catch (Exception ex)
-            {
-                responseModel = Result<T>.FailureResult(ex);
-            }
-
-        result:
-            return responseModel;
-        }
-
         public async Task<Result<T>> GetListAsync()
         {
             Result<T> responseModel;
@@ -123,13 +55,55 @@ namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.Ge
             return responseModel;
         }
 
+        public async Task<Result<T>> GetByIdAsync(int id)
+        {
+            Result<T> responseModel;
+            try
+            {
+                var item = await _table.FindAsync(id);
+                if (item is null)
+                {
+                    responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                    goto result;
+                }
+
+                List<T> lst = new() { item };
+                responseModel = Result<T>.SuccessResult(lst);
+            }
+            catch (Exception ex)
+            {
+                responseModel = Result<T>.FailureResult(ex);
+            }
+
+        result:
+            return responseModel;
+        }
+
+        public async Task<Result<T>> AddAsync(T requestModel)
+        {
+            Result<T> responseModel;
+            try
+            {
+                await _context.Set<T>().AddAsync(requestModel);
+                int result = await _context.SaveChangesAsync();
+
+                responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                responseModel = Result<T>.FailureResult(ex);
+            }
+
+            return responseModel;
+        }
+
         public async Task<Result<T>> UpdateAsync(T requestModel, int id)
         {
             Result<T> responseModel;
             try
             {
                 var item = await _table.FindAsync(id);
-                if (item == null)
+                if (item is null)
                 {
                     responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
                     return responseModel;
@@ -155,6 +129,32 @@ namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.Ge
                 responseModel = Result<T>.FailureResult(ex);
             }
 
+            return responseModel;
+        }
+
+        public async Task<Result<T>> DeleteAsync(int id)
+        {
+            Result<T> responseModel;
+            try
+            {
+                var item = await _table.FindAsync(id);
+                if (item is null)
+                {
+                    responseModel = Result<T>.FailureResult(MessageResource.NotFound, EnumStatusCode.NotFound);
+                    goto result;
+                }
+
+                _table.Remove(item);
+                int result = await _context.SaveChangesAsync();
+
+                responseModel = Result<T>.ExecuteResult(result, successStatusCode: EnumStatusCode.Accepted);
+            }
+            catch (Exception ex)
+            {
+                responseModel = Result<T>.FailureResult(ex);
+            }
+
+        result:
             return responseModel;
         }
     }

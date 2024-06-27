@@ -1,4 +1,5 @@
 ﻿using DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Blog;
+using DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student;
 using DotNet8WebApi.GenericRepositoryPatternExample.DbService.AppDbContexts;
 using DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,8 @@ namespace DotNet8WebApi.GenericRepositoryPatternExample.Api
 
         private static IServiceCollection AddBusinessLogicService(this IServiceCollection services)
         {
-            services.AddScoped<BL_Blog>();
+            services.AddScoped<BL_Blog>()
+                .AddScoped<BL_Student>();
             return services;
         }
 

@@ -20,10 +20,6 @@ namespace DotNet8WebApi.GenericRepositoryPatternExample.Models.Features
         {
             return new Result<T> { IsSuccess = true, Message = message, StatusCode = statusCode };
         }
-        //public static Result<T> SuccessResult(T data, string message = "Success.", EnumStatusCode statusCode = EnumStatusCode.Success)
-        //{
-        //    return new Result<T> { IsSuccess = true, Message = message, Data = data, StatusCode = statusCode };
-        //}
         public static Result<T> SuccessResult(List<T> data, string message = "Success.", EnumStatusCode statusCode = EnumStatusCode.Success)
         {
             return new Result<T> { IsSuccess = true, Message = message, StatusCode = statusCode, Data = data };
