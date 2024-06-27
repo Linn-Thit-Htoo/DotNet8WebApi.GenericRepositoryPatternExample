@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features;
 
 [Route("api/[controller]")]
 [ApiController]
