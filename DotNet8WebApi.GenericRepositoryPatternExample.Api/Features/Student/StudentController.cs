@@ -1,30 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student
+namespace DotNet8WebApi.GenericRepositoryPatternExample.Api.Features.Student;
+
+[Route("api/[controller]")]
+[ApiController]
+public class StudentController : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StudentController : BaseController
+    private readonly BL_Student _bL_Student;
+
+    public StudentController(BL_Student bL_Student)
     {
-        private readonly BL_Student _bL_Student;
+        _bL_Student = bL_Student;
+    }
 
-        public StudentController(BL_Student bL_Student)
+    [HttpGet]
+    public async Task<IActionResult> GetStudentList()
+    {
+        try
         {
-            _bL_Student = bL_Student;
+            var result = await _bL_Student.GetStudentList();
+            return Content(result);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetStudentList()
+        catch (Exception ex)
         {
-            try
-            {
-                var result = await _bL_Student.GetStudentList();
-                return Content(result);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            return InternalServerError(ex);
         }
     }
 }
