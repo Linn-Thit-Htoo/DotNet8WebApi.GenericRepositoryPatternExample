@@ -1,7 +1,6 @@
-﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Models.Features.Blog
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Models.Features.Blog;
+
+public class BlogListResponseModel
 {
-    public class BlogListResponseModel
-    {
-        public List<BlogModel> Blogs { get; set; }
-    }
+    public List<BlogModel> Blogs { get; set; }
 }
