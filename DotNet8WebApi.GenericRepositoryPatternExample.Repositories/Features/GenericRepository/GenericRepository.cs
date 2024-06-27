@@ -1,10 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.DbService.AppDbContexts;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Enums;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
-using DotNet8WebApi.GenericRepositoryPatternExample.Models.Resources;
-using Microsoft.EntityFrameworkCore;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {

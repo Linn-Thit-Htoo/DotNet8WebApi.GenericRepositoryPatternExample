@@ -1,6 +1,4 @@
-﻿using DotNet8WebApi.GenericRepositoryPatternExample.Models.Features;
-
-namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
+﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
 
 public interface IGenericRepository<T> where T : class
 {
