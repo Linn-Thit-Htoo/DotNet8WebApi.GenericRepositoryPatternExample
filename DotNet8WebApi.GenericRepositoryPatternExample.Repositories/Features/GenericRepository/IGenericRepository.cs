@@ -1,6 +1,7 @@
 ﻿namespace DotNet8WebApi.GenericRepositoryPatternExample.Repositories.Features.GenericRepository;
 
-public interface IGenericRepository<T> where T : class
+public interface IGenericRepository<T>
+    where T : class
 {
     Task<Result<T>> GetListAsync();
     Task<Result<T>> GetListOrderByDescAsync<TKey>(Func<T, TKey> orderBySelector);
