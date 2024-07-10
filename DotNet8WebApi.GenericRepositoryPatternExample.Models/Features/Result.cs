@@ -4,10 +4,12 @@ public class Result<T>
 {
     public List<T> Data { get; set; }
     public bool IsSuccess { get; set; }
-    public bool IsError
-    {
-        get { return !IsSuccess; }
-    }
+    //public bool IsError
+    //{
+    //    get { return !IsSuccess; }
+    //}
+
+    public bool IsError => !IsSuccess;
     public string Message { get; set; }
     public EnumStatusCode StatusCode { get; set; }
 
